@@ -19,6 +19,9 @@ public class Main {
 		System.out.println("EasyShot");
 		// Чтение настроек
 		Settings settings = new Settings();
+		// Запуск прослушки порта
+		Reader reader = new Reader(settings.getPort(), settings.getImagePath());
+		reader.start();
 	}
 
 }
