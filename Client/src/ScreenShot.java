@@ -3,16 +3,17 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 /**
- * Класс создает скриншот при вызове конструктора класса. 
+ * Класс создает скриншот при вызове конструктора класса.
+ * Реализует интерфейс Serializable для поддержки передачи объектов данного класса через потоки.
  * 
  * @author Taneong
  *
  */
 
-
-public class ScreenShot {
+public class ScreenShot implements Serializable {
 
 	/**
 	 * Переменная для хранения непосредственного изображения с экрана
