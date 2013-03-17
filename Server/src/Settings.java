@@ -21,6 +21,11 @@ public class Settings {
 	private int port;
 	
 	/**
+	 * Адрес для сохранения изображений
+	 */
+	private String imagePath;
+	
+	/**
 	 * Конструктор класса. Считывает содержимое файла конфигурации.
 	 */
 	public Settings() {
@@ -31,6 +36,8 @@ public class Settings {
 			Scanner scanner;
 			scanner = new Scanner(file); // Вешаем сканер на файл конфигурации
 			port = scanner.nextInt(); // Считываем порт
+			scanner.nextLine(); // Костыль, почему-то возвращает пустую строку
+			imagePath = scanner.nextLine(); // Считываем путь для сейва изображений
 		} catch (FileNotFoundException e) {
 			System.err.println("Ошибка чтения файла конфигурации. Файл не найден");
 		}
@@ -44,4 +51,11 @@ public class Settings {
 		return port;
 	}
 
+	/**
+	 * Метод для получения пути сохранения изображений
+	 * @return Возвращает абсолютный путь в String
+	 */
+	public String getImagePath() {
+		return imagePath;
+	}
 }

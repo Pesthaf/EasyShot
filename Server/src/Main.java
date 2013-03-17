@@ -1,9 +1,9 @@
 /**
  * Основной класс сервера EasyShot.
  * TODO:
- * - Прослушка порта
- * - Получение изображения
- * - Сохранение на диск
+ * + Прослушка порта
+ * + Получение изображения
+ * + Сохранение на диск
  *
  * @author Taneong
  *
@@ -20,7 +20,7 @@ public class Main {
 		// Чтение настроек
 		Settings settings = new Settings();
 		// Запуск прослушки порта
-		Reader reader = new Reader(settings.getPort());
+		Reader reader = new Reader(settings.getPort(), settings.getImagePath());
 		reader.start();
 	}
 
