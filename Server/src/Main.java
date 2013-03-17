@@ -20,7 +20,7 @@ public class Main {
 		// Чтение настроек
 		Settings settings = new Settings();
 		// Запуск прослушки порта
-		Reader reader = new Reader(settings.getPort(), settings.getImagePath());
+		Reader reader = new Reader(settings.getPort());
 		reader.start();
 	}
 
