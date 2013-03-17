@@ -57,7 +57,7 @@ public class Sender {
 	 * Метод для отправки скриншота на сервер
 	 * @return Возвращает true при успешном выполнении
 	 */
-	public boolean Send() {
+	public String Send() {
 		try {
 			// Открываем сокет
 			socket = new Socket(ip, port);
@@ -67,25 +67,25 @@ public class Sender {
 			// Отправляем скриншот
 			ImageIO.write(image.getScreenShot(), "png", os);
 			// Ждем адрес
-			byte buffer[] = new byte[4096];
-			while (is.read(buffer) != -1) {
-				url += new String(buffer);
-			}
+			byte buffer[] = new byte[4096]; // 4К байт - должно быть достаточно для адреса
+			is.read(buffer); // Считываем из потока
+			url = new String(buffer);
 			// Закрываем сокет
 			is.close();
 			os.close();
 			socket.close();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-			return false;
+			
+			return "-1";
 		} catch (SocketException e) {
-			System.out.println("Адрес для загруки: " + url);
-			return true;
+			System.err.println("Невозможно установить соединение. Возможно, сервер отключен.");
+			return "-1";
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			return "-1";
 		}
-		return true;
+		return url;
 	}
 	
 }
