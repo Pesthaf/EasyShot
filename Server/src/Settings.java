@@ -26,6 +26,11 @@ public class Settings {
 	private String imagePath;
 	
 	/**
+	 * IP-адрес сервера
+	 */
+	private String ip;
+	
+	/**
 	 * Конструктор класса. Считывает содержимое файла конфигурации.
 	 */
 	public Settings() {
@@ -38,6 +43,7 @@ public class Settings {
 			port = scanner.nextInt(); // Считываем порт
 			scanner.nextLine(); // Костыль, почему-то возвращает пустую строку
 			imagePath = scanner.nextLine(); // Считываем путь для сейва изображений
+			ip = scanner.nextLine(); // Считываем IP-адрес сервера
 		} catch (FileNotFoundException e) {
 			System.err.println("Ошибка чтения файла конфигурации. Файл не найден");
 		}
@@ -57,5 +63,13 @@ public class Settings {
 	 */
 	public String getImagePath() {
 		return imagePath;
+	}
+	
+	/**
+	 * Метод для получения IP-адреса сервера
+	 * @return Возвращает IP-адрес в String
+	 */
+	public String getIP() {
+		return ip;
 	}
 }

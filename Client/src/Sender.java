@@ -1,10 +1,8 @@
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import javax.imageio.ImageIO;
@@ -39,6 +37,11 @@ public class Sender {
 	private ScreenShot image;
 	
 	/**
+	 * URL адрес для загрузки скриншота
+	 */
+	private String url = "";
+	
+	/**
 	 * Конструктор класса
 	 * @param ip IP-адрес сервера
 	 * @param port Порт для соединения с сервером
@@ -63,11 +66,21 @@ public class Sender {
 			OutputStream os = socket.getOutputStream();
 			// Отправляем скриншот
 			ImageIO.write(image.getScreenShot(), "png", os);
+			// Ждем адрес
+			byte buffer[] = new byte[4096];
+			while (is.read(buffer) != -1) {
+				url += new String(buffer);
+			}
 			// Закрываем сокет
+			is.close();
+			os.close();
 			socket.close();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			return false;
+		} catch (SocketException e) {
+			System.out.println("Адрес для загруки: " + url);
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
