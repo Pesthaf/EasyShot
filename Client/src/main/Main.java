@@ -1,10 +1,10 @@
-package Main;
+package main;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.image.BufferedImage;
 
 import tray.Tray;
+import area.Area;
 
 /**
  * Основной класс клиента EasyShot. 
@@ -50,8 +50,9 @@ public class Main {
 
 	/**
 	 * Метод создает скриншот, отправляет его и возвращает адрес пользователю
+	 * @param fullScreen True - скриншот всего экрана, false - области
 	 */
-	public static void createScreenshot() {
+	public static void createScreenshot(final boolean fullScreen) {
 		if (uploading) // Если загрузка уже идет, то не реагируем
 			return;
 		else
@@ -62,10 +63,23 @@ public class Main {
 				// Чтение настроек
 				Settings settings = new Settings();
 				// Получение скриншота
-				ScreenShot screenShot = new ScreenShot();
+				ScreenShot screenShot = new ScreenShot(); // Создаем скриншот всего экрана
+				BufferedImage image;
+				if (fullScreen) { // Всего экрана
+					image = screenShot.getScreenShot();
+				} else { // Области
+					Area area = new Area(screenShot.getScreenShot()); // Представляем пользователю выбор части скриншота
+					image = area.getCutImage();
+				}
+				// Проверяем, не отменил ли пользователь операцию
+				if (image == null) {
+					tray.message("Отменено");
+					uploading = false; // Позволяем пользователю снова выгружать скриншоты
+					return;
+				}
 				// Отправка скриншота
+				Sender sender = new Sender(settings.getIP(), settings.getPort(), image);
 				tray.message("Загружаем скриншот...");
-				Sender sender = new Sender(settings.getIP(), settings.getPort(), screenShot);
 				url = sender.Send();
 				// Заполняем буфер обмена и выводим уведомление
 				tray.startTimer(); // Меняем действие при нажатии на уведомление: теперь откроется ссылка, а не загрузится скриншот

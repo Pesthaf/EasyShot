@@ -36,7 +36,7 @@ public class Tray {
 	 */
 	private boolean openOrUpload = false;
 	
-	private static final long OPEN_DELAY = 10000;
+	private static final long OPEN_DELAY = 7500;
 	
 	/**
 	 * Конструктор, создает иконку, вешает обработчик и добавляет в трей.
@@ -47,10 +47,11 @@ public class Tray {
 			trayicon = new TrayIcon(ImageIO.read(icon), "EasyShot", Menu.getMenu()); // Регистрируем место в трее
 			trayicon.addActionListener(new ActionListener() { // Вешаем обработчик нажатий
 				public void actionPerformed(ActionEvent arg0) { // Выполняется при нажатии по иконке в трее или по уведомлению
-					if (!openOrUpload) Main.Main.createScreenshot();
+					if (!openOrUpload) main.Main.createScreenshot(false);
 					else
 						try {
-							Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + Main.Main.getURL()); // Открывает ссылку в браузере по-умолчанию
+							Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + main.Main.getURL()); // Открывает ссылку в браузере по-умолчанию
+							openOrUpload = false; // Повторно пользователь не станет открыть браузер, поэтому по клику будет происходить загрузка
 						} catch (IOException e) {}
 				}
 			});

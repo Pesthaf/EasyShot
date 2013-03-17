@@ -23,16 +23,23 @@ public class Menu {
 	 */
 	private static void createMenu() {
 		// Заполняем меню пунктами
-		MenuItem item1 = new MenuItem("Сделать скриншот");
-		MenuItem item2 = new MenuItem("Выход");
+		MenuItem item1 = new MenuItem("Сделать скриншот экрана");
+		MenuItem item2 = new MenuItem("Сделать скриншот области");
+		MenuItem item3 = new MenuItem("Выход");
 		// Вешаем обработчики
 		item1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.Main.createScreenshot();
+				main.Main.createScreenshot(true);
 			}
 		});
 		// ----
 		item2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				main.Main.createScreenshot(false);
+			}
+		});
+		// ----
+		item3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(1); // Выходим
 			}
@@ -40,6 +47,7 @@ public class Menu {
 		// Добавляем пункты в меню
 		popMenu.add(item1);
 		popMenu.add(item2);
+		popMenu.add(item3);
 	}
 	
 	/**

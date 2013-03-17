@@ -1,4 +1,5 @@
-package Main;
+package main;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,7 +36,7 @@ public class Sender {
 	/**
 	 * Изображение для отправки на сервер
 	 */
-	private ScreenShot image;
+	private BufferedImage image;
 	
 	/**
 	 * URL адрес для загрузки скриншота
@@ -48,7 +49,7 @@ public class Sender {
 	 * @param port Порт для соединения с сервером
 	 * @param image Изображение для отправки на сервер
 	 */
-	public Sender(String ip, int port, ScreenShot image) {
+	public Sender(String ip, int port, BufferedImage image) {
 		this.ip = ip;
 		this.port = port;
 		this.image = image;
@@ -66,7 +67,7 @@ public class Sender {
 			InputStream is = socket.getInputStream();
 			OutputStream os = socket.getOutputStream();
 			// Отправляем скриншот
-			ImageIO.write(image.getScreenShot(), "png", os);
+			ImageIO.write(image, "png", os);
 			// Ждем адрес
 			byte buffer[] = new byte[4096]; // 4К байт - должно быть достаточно для адреса
 			is.read(buffer); // Считываем из потока
