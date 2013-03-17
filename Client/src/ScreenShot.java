@@ -13,7 +13,7 @@ import java.io.Serializable;
  *
  */
 
-public class ScreenShot implements Serializable {
+public class ScreenShot {
 
 	/**
 	 * Переменная для хранения непосредственного изображения с экрана

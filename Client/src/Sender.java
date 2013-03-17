@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.imageio.ImageIO;
+
 /**
  * Класс отправляет скриншот серверу.
  * 
@@ -59,12 +61,8 @@ public class Sender {
 			// Получаем потоки
 			InputStream is = socket.getInputStream();
 			OutputStream os = socket.getOutputStream();
-			// Создаем потоки для обмена объектами
-			ObjectInputStream ois = new ObjectInputStream(is);
-			ObjectOutputStream oos = new ObjectOutputStream(os);
 			// Отправляем скриншот
-			oos.writeObject(image);
-			oos.flush();
+			ImageIO.write(image.getScreenShot(), "png", os);
 			// Закрываем сокет
 			socket.close();
 		} catch (UnknownHostException e) {

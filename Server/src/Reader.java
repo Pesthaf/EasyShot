@@ -1,8 +1,9 @@
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
@@ -23,20 +24,14 @@ public class Reader {
 	 * Порт для прослушки входящих соединений
 	 */
 	private int port;
-	
-	/**
-	 * Путь для полученного изображения
-	 */
-	private String imagePath;
 
 	/**
 	 * Конструктор
 	 * 
 	 * @param Порт для прослушки входящих соединений
 	 */
-	public Reader(int port, String imagePath) {
+	public Reader(int port) {
 		this.port = port;
-		this.imagePath = imagePath;
 	}
 
 	/**
@@ -49,15 +44,16 @@ public class Reader {
 			// Запускаем бесконечный цикл
 			while (true) {
 				Socket client = socket.accept();
-				
-				ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-				ScreenShot image = (ScreenShot) ois.readObject();
-				ImageIO.write(image.getScreenShot(), "png", new File(imagePath));
+				// Считываем изображение из потока
+				BufferedImage image = ImageIO.read(client.getInputStream());
+				// Сохраняем на диск
+				UUID id = UUID.randomUUID();
+				String imagePath = id.toString().replaceAll("-", "") + ".png";
+				ImageIO.write(image, "png", new File(imagePath));
+				// Закрываем сокет
 				client.close();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
