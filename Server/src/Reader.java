@@ -52,14 +52,14 @@ public class Reader {
 	 */
 	public void start() {
 		try {
-		System.out.println("Начинаем слушать " + ip + ":" + port);
+			Logs.write("Начинаем слушать " + ip + ":" + port);
 			// Создаем серверный сокет
 			socket = new ServerSocket(port);
 			// Запускаем бесконечный цикл
 			while (true) {
 				Socket client = socket.accept();
 				// Уведомляем о новом подключении
-				System.out.println("Подключился клиент");
+				Logs.write("Подключился клиент");
 				// Обрабатываем клиента
 				Handler handler = new Handler(client, imagePath, ip);
 				handler.start();
