@@ -51,9 +51,8 @@ public class Reader {
 	 * Запускает бесконечный цикл прослушки порта на наличие соединений
 	 */
 	public void start() {
-		
-		System.out.println("Начинаем слушать " + ip + ":" + port);
 		try {
+		System.out.println("Начинаем слушать " + ip + ":" + port);
 			// Создаем серверный сокет
 			socket = new ServerSocket(port);
 			// Запускаем бесконечный цикл
@@ -61,25 +60,11 @@ public class Reader {
 				Socket client = socket.accept();
 				// Уведомляем о новом подключении
 				System.out.println("Подключился клиент");
-				// Считываем изображение из потока
-				BufferedImage image = ImageIO.read(client.getInputStream());
-				// Сохраняем на диск
-				UUID id = UUID.randomUUID();
-				String fileName = id.toString().replaceAll("-", "") + ".png";
-				ImageIO.write(image, "png", new File(imagePath + fileName));
-				String url = "http://" + ip + "/screenshots/" + fileName;
-				// Уведомляем об успешном получении файла
-				System.out.println("Скриншот успешно получен и сохранен по пути: " + fileName + "\n");
-				System.out.println("URL для загрузки: " + url);
-				// Отправляем адрес клиенту
-				BufferedOutputStream bos = new BufferedOutputStream(client.getOutputStream());
-				bos.write(url.getBytes());
-				// Закрываем сокет
-				bos.flush();
-				bos.close();
-				client.close();
+				// Обрабатываем клиента
+				Handler handler = new Handler(client, imagePath, ip);
+				handler.start();
 			}
-		} catch (IOException e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
